@@ -9,15 +9,14 @@
 ||*spine1*||spine1||*C*||Center||*JFK*||Joint FK|| ||`spine1_C_JSK`||
 || || || || ||*CTR*||Control|| ||`head_C_ORC`||
 || || || || ||*IKH*||IK Handle|| ||`lookat_C_CTR`||
-|| || || || ||*LOC*||Locator|| || ||
-|| || || || ||*BLS*||Blend Shape|| || ||
+|| || || || ||*LOC*||Locator|| ||`spine2_C_GUI`||
+|| || || || ||*BLS*||Blend Shape|| ||`spine2_C_GUO`||
 || || || || ||*POC*||Point Constraint|| || ||
 || || || || ||*AIC*||Aim Constraint|| || ||
 || || || || ||*ORC*||Orient Constraint|| || ||
 || || || || ||*PAC*||Parent Constraint|| || ||
-
-
-
+|| || || || ||*GUI*||Guides|| || ||
+|| || || || ||*GUO*||Guides Up Object|| || ||
 
 
 
