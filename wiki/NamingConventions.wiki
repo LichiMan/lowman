@@ -1,0 +1,33 @@
+#labels Phase-Design
+= Naming Conventions =
+
+== Style ==
+
+*`NAME_SIDE_TYPE`*
+
+||*NAME*|| ||*SIDE*|| ||*TYPE*|| ||
+||*arm*||arm||*L*||Left||*JSK*||Joint Skin||
+||*head*||head||*R*||Right||*JIK*||Joint IK||
+||*spine1*||spine1||*C*||Center||*JFK*||Joint FK||
+|| || || || ||*CTR*||Control||
+|| || || || ||*IKH*||IK Handle||
+|| || || || ||*LOC*||Locator||
+|| || || || ||*BLS*||Blend Shape||
+|| || || || ||*POC*||Point Constraint||
+|| || || || ||*AIC*||Aim Constraint||
+|| || || || ||*ORC*||Orient Constraint||
+|| || || || ||*PAC*||Parent Constraint||
+
+== Examples ==
+ * `arm_L_JSK`
+ * `arm_R_JIK`
+ * `spine1_C_JSK`
+ * `head_C_ORC`
+ * `lookat_C_CTR`
+
+
+
+
+
+
+
