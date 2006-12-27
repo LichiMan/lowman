@@ -1,8 +1,6 @@
 #labels Phase-Design
 = Naming Conventions =
 
-== Style ==
-
 *`NAME_SIDE_TYPE`*
 
 ||*NAME*|| ||*SIDE*|| ||*TYPE*|| || ||*EXAMPLE*||
@@ -17,7 +15,6 @@
 || || || || ||*AIC*||Aim Constraint|| || ||
 || || || || ||*ORC*||Orient Constraint|| || ||
 || || || || ||*PAC*||Parent Constraint|| || ||
-
 
 
 
