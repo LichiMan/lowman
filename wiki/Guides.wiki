@@ -4,7 +4,23 @@
 Las guías son jerarquías de nodos que forman visualmente un esqueleto o parte de él. Se componen de:
  * *GIS* _(Guide Implicit Sphere)_: Es un nodo _implicitSphere_ que representa el _joint_
  * *GUO* _(Guide Up Object)_: Es un _locator_ usado para el _World Up Object_ del _Aim Constraint_
- * *GUC* _(Guide Union Curve)_: Es una curva que une dos _GIS_ representando el _bone_. Su _NAME_ viene dado por el _GIS padre_ y _GIS hijo_ juntos: _`rootHip_C_GUC (NAME_SIDE_TYPE)`_
+ * *GUC* _(Guide Union Curve)_: Es una curva que une dos _GIS_ representando el _bone_.
 
+== GIS ==
 
+El _Guide Implicit Sphere_ tiene un atributo _float_ llamado _upObject_ el cual controla el atributo _rotateY_ de su _GUO_.
+
+== GUO ==
+
+El _Guide Up Object_ está emparentado al _GIS_ y tiene todos sus atributos bloqueados y ocultos. Tiene su _Display Type_ en _Reference_ para que nadie pueda tocarlo.
+
+== GUC ==
+
+Los _Guide Union Curve_ son curvas lineales de sólo 2 CVs cada uno con un _cluster_ constreñido a su respectivo _GIS_. Su _NAME_ viene dado por el _GIS padre_ y _GIS hijo_ juntos: _`rootHip_C_GUC (NAME_SIDE_TYPE)`_
+
+Tienen sus atributos bloqueados y ocultos al igual que los _GUO_ y también su _Display Type_ en _Reference_ para que nadie tenga acceso a ellos.
+
+Los _GUC_ tienen dos atributos _string_:
+ * _parent_: El cual tiene el nombre de su _GIS_ padre
+ * _child_: El cual tiene el nombre de su _GIS_ hijo
 
