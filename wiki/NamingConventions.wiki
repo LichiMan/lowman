@@ -11,13 +11,11 @@
 || || || || ||*IKH*||IK Handle|| ||`lookat_C_CTR`||
 || || || || ||*LOC*||Locator|| ||`spine2_C_GUI`||
 || || || || ||*BLS*||Blend Shape|| ||`spine2_C_GUO`||
+|| || || || ||*CLU*||Cluster|| ||||
 || || || || ||*POC*||Point Constraint|| || ||
 || || || || ||*AIC*||Aim Constraint|| || ||
 || || || || ||*ORC*||Orient Constraint|| || ||
 || || || || ||*PAC*||Parent Constraint|| || ||
-|| || || || ||*GUI*||Guides|| || ||
-|| || || || ||*GUO*||Guides Up Object|| || ||
-
-
-
-
+|| || || || ||*GIS*||Guide Implicit Sphere|| || ||
+|| || || || ||*GUO*||Guide Up Object|| || ||
+|| || || || ||*GUC*||Guide Union Curve|| || ||
