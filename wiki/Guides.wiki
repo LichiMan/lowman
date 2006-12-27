@@ -1,12 +1,10 @@
 #labels Phase-Design
 = Guides =
 
-Las guías son jerarquías de nodos las cuales forman visualmente un esqueleto o parte de él. Se componen de implicitSphere
+Las guías son jerarquías de nodos que forman visualmente un esqueleto o parte de él. Se componen de:
+ * *GIS* _(Guide Implicit Sphere)_: Es un nodo _implicitSphere_ que representa el _joint_
+ * *GUO* _(Guide Up Object)_: Es un _locator_ usado para el _World Up Object_ del _Aim Constraint_
+ * *GUC* _(Guide Union Curve)_: Es una curva que une dos _GIS_ representando el _bone_. Su _NAME_ viene dado por el _GIS padre_ y _GIS hijo_ juntos: _`rootHip_C_GUC (NAME_SIDE_TYPE)`_
 
 
-= Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
