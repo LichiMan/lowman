@@ -16,7 +16,7 @@ El _Guide Up Object_ está emparentado al _GIS_ y tiene todos sus atributos bloq
 
 == GUC ==
 
-Los _Guide Union Curve_ son curvas lineales de sólo 2 CVs cada uno con un _cluster_ constreñido a su respectivo _GIS_. Su _NAME_ viene dado por el _GIS padre_ y _GIS hijo_ juntos: _`rootHip_C_GUC (NAME_SIDE_TYPE)`_
+Los _Guide Union Curve_ son curvas lineales de sólo 2 CVs cada uno con un _cluster_ constreñido a su respectivo _GIS_. Su _NAME_ viene dado por el _GIS padre_ y _GIS hijo_ juntos: _`roothip_C_GUC (NAME_SIDE_TYPE)`_
 
 Tienen sus atributos bloqueados y ocultos al igual que los _GUO_ y también su _Display Type_ en _Reference_ para que nadie tenga acceso a ellos.
 
