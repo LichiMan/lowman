@@ -19,3 +19,4 @@
 || || || || ||*GIS*||Guide Implicit Sphere|| || ||
 || || || || ||*GUO*||Guide Up Object|| || ||
 || || || || ||*GUC*||Guide Union Curve|| || ||
+|| || || || ||*GRP*||Group|| || ||
