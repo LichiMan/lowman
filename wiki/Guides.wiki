@@ -8,7 +8,7 @@ Las guías son jerarquías de nodos que forman visualmente un esqueleto o parte 
 
 == GIS ==
 
-El _Guide Implicit Sphere_ tiene un atributo _float_ llamado _upObject_ el cual controla el atributo _rotateY_ de su _GUO_.
+El _Guide Implicit Sphere_ tiene un atributo _float_ llamado _rotateAim_ el cual controla el atributo _rotateY_ de su _GUO_.
 
 == GUO ==
 
@@ -23,4 +23,3 @@ Tienen sus atributos bloqueados y ocultos al igual que los _GUO_ y también su _
 Los _GUC_ tienen dos atributos _string_:
  * _parent_: El cual tiene el nombre de su _GIS_ padre
  * _child_: El cual tiene el nombre de su _GIS_ hijo
-
