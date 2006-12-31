@@ -18,11 +18,13 @@ Los siguientes atributos solo están en el  _creatureStatus low_:
 
 El _creature_ tiene la siguiente jerarquía:
 
-{{{creature
+{{{
+creature
    |_ creature_placement
    |_ creature_joints
    |_ creature_geometry
-   |_ creature_constraints}}}
+   |_ creature_constraints
+}}}
 
 El _shape_ de _`creature_placement`_ es un _nurbsCurve_ con forma de círculo con cuatro flechas:
 
