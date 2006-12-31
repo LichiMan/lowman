@@ -20,6 +20,7 @@ creature
    |_ creature_joints
    |_ creature_geometry
    |_ creature_constraints
+   |_ creature_extras
 }}}
 
 === creature_placement ===
