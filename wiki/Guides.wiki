@@ -21,5 +21,5 @@ Los _Guide Union Curve_ son curvas lineales de sólo 2 CVs cada uno con un _clus
 Tienen sus atributos bloqueados y ocultos al igual que los _GUO_ y también su _Display Type_ en _Reference_ para que nadie tenga acceso a ellos.
 
 Los _GUC_ tienen dos atributos _string_:
- * _parent_: El cual tiene el nombre de su _GIS_ padre
- * _child_: El cual tiene el nombre de su _GIS_ hijo
+ * *parent*: El cual tiene el nombre de su _GIS_ padre
+ * *child*: El cual tiene el nombre de su _GIS_ hijo
