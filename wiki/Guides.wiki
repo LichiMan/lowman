@@ -12,7 +12,7 @@ El _Guide Implicit Sphere_ tiene un atributo _float_ llamado _rotateAim_ el cual
 
 == GUO ==
 
-El _Guide Up Object_ está emparentado al _GIS_ y tiene todos sus atributos bloqueados y ocultos. Tiene su _Display Type_ en _Reference_ para que nadie pueda tocarlo.
+El _Guide Up Object_ está emparentado al _GIS_ y trasladado -1 en el eje Z de forma local. Tiene todos sus atributos bloqueados y ocultos. Tiene su _Display Type_ en _Reference_ para que nadie pueda tocarlo.
 
 == GUC ==
 
