@@ -4,7 +4,7 @@
 Las guías son jerarquías de nodos que forman visualmente un esqueleto o parte de él. Se componen de:
  * *GIS* _(Guide Implicit Sphere)_: Es un nodo _implicitSphere_ que representa el _joint_
  * *GUO* _(Guide Up Object)_: Es un _locator_ usado para el _World Up Object_ del _Aim Constraint_
- * *GUC* _(Guide Union Curve)_: Es una curva que une dos _GIS_ representando el _bone_.
+ * *GUC* _(Guide Union Curve)_: Es una curva que une dos _GIS_ representando el _bone_
 
 == GIS ==
 
