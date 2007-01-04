@@ -11,7 +11,7 @@ Las guías son jerarquías de nodos que forman visualmente un esqueleto o parte 
 El _Guide Implicit Sphere_ tiene un atributo _float_ y otro _string_:
 
  * *rotateAim*: _float_ que controla el atributo _rotateY_ de su _GUO_
- * *type*: _string_ con el tipo de parte del cuerpo al que corresponde (_spine_, _head_, _leg_, _hand_) o con la palabra _skip_. Los _GIS_ que no son el _padre_ de esa parte del cuerpo son _skip_. Este atributo sirve para saber que script tenemos que lanzar en ese futuro joint
+ * *anatomyPart*: _string_ con el tipo de parte del cuerpo al que corresponde (_spine_, _head_, _leg_, _hand_) o con la palabra _skip_. Los _GIS_ que no son el _padre_ de esa parte del cuerpo son _skip_. Este atributo sirve para saber que script tenemos que lanzar en ese futuro joint
 
 == GUO ==
 
