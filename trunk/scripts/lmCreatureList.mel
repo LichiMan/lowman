@@ -1,0 +1,38 @@
+//--------------------------------------------------------------------------//
+//  lmCreatureList.mel
+//
+//  Author:		Miguel González Viñé
+//				lichiman@gmail.com
+//
+//  Version:		0.0.1
+//  Date:			Jan 09, 2007
+//
+//  Description:	List all Creature nodes.
+//
+//  Usage:		Use "lmCreatureList;"
+//
+//
+//  Return:		string[] $creatures
+//
+//  Files Needed:
+//			none
+//
+//--------------------------------------------------------------------------/
+global proc string[] lmCreatureList()
+{
+	string $creatures[];
+	int $cc = 0;
+
+	string $transforms[] = `ls -type transform`;
+
+	for ($transform in $transforms)
+	{
+		if (`attributeQuery -exists -node $transform "creatureName"`)
+		{
+			$creatures[$cc] = $transform;
+			$cc = $cc+1;
+		}
+	}
+
+	return $creatures;	
+}
