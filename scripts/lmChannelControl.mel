@@ -1,0 +1,49 @@
+//--------------------------------------------------------------------------//
+//  lmChannelControl.mel
+//
+//  Author:		Miguel González Viñé
+//				lichiman@gmail.com
+//
+//  Version:		0.0.1
+//  Date:			Jan 09, 2007
+//
+//  Description:	Show/Hide and Lock/Unlock attributes.
+//
+//  Usage:		Use "lmChannelControl $objName $attrName $showHide $lockUnlock;"
+//				$objName Name of the object.
+//				$attrName Name of the attribute.
+//				$showHide is an int for Show or Hide.
+//				$lockUnlock is an int for Lock or Unlock.
+//
+//
+//  Return:		none
+//
+//  Files Needed:
+//			none
+//
+//--------------------------------------------------------------------------/
+
+global proc lmChannelControl(string $objName, string $attrName, int $showHide, int $lockUnlock)
+{
+	if ($attrName == "ALL")
+	{
+		string $allAttr[] = `listAttr -keyable $objName`;
+		for ($attr in $allAttr)
+		{
+			setAttr -keyable $showHide -lock $lockUnlock ($objName+"."+$attr);
+		}
+	}
+	else
+	{
+		if ($attrName == "translate" || $attrName == "rotate" || $attrName == "scale")
+		{
+			setAttr -keyable $showHide -lock $lockUnlock ($objName+"."+$attrName+"X");
+			setAttr -keyable $showHide -lock $lockUnlock ($objName+"."+$attrName+"Y");
+			setAttr -keyable $showHide -lock $lockUnlock ($objName+"."+$attrName+"Z");
+		}
+		else
+		{
+			setAttr -keyable $showHide -lock $lockUnlock ($objName+"."+$attrName);
+		}
+	}
+}
