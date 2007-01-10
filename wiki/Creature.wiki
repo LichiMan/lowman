@@ -5,10 +5,10 @@ Un _creature_ es un _transform node_ con unos determinados atributos que la defi
 
 == Attributes ==
 
- * *creature*: Un _string_ con el nombre de la criatura.
- * *creatureType*: Un _enum_ con el tipo de criatura como _biped_, _quadruped_, etc.
- * *creatureStatus*: Un _enum_ con tres opciones: _low_, _medium_, _full_.
- * *creatureObjects*: Un _message_ en el que se connectan los diferentes objetos que componen la criatura para futuras transferencias de animación, etc.
+ * *creature* : Un _string_ con el nombre de la criatura.
+ * *creatureType* : Un _enum_ con el tipo de criatura como _biped_, _quadruped_, etc.
+ * *creatureStatus* : Un _enum_ con tres opciones: _low_, _medium_, _full_.
+ * *creatureObjects* : Un _message_ en el que se connectan los diferentes objetos que componen la criatura para futuras transferencias de animación, etc.
 
 == Jerarquía ==
 
@@ -33,5 +33,4 @@ El _shape_ de _`creature_placement`_ es un _nurbsCurve_ con forma de círculo co
 Los siguientes atributos solo están en el _creatureStatus low_:
  * *scaleGuides* : Un _float_ al que están conectados todos los _`GuideImplicitSphereShape.radius`_.
  * *scaleAims* : Un _float_ al que están conectados todos los _`GuideUpObjectShape.localScale`_.
-
 
