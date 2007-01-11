@@ -1,0 +1,53 @@
+//--------------------------------------------------------------------------//
+//  lmCreatureTokenize.mel
+//
+//  Author:		Miguel González Viñé
+//				lichiman@gmail.com
+//
+//  Version:		0.0.1
+//  Date:			Jan 10, 2007
+//
+//  Description:	Return the name of creature, object, side or nodeType.
+//
+//  Usage:		Use "lmCreatureTokenize $object $type;"
+//				string $object Name of the object.
+//				string $type What you want to get.
+//
+//
+//  Return:		string $return
+//
+//  Files Needed:
+//			none
+//
+//--------------------------------------------------------------------------/
+global proc string lmCreatureTokenize(string $object, string $type)
+{
+	// Check for errors
+	if ($type != "creature" && $type != "object" && $type != "side" && $type != "nodeType")
+		error "Wrong type. Write creature, object, side or nodeType.";
+
+	string $return;
+
+	// Get $return
+	string $tokens[];
+	int $numTokens = `tokenize $object "_" $tokens`;
+
+	// Return what we want
+	switch ($type)
+	{
+		case "creature":
+			$return = $tokens[0];
+			break;
+		case "object":
+			$return = $tokens[1];
+			break;
+		case "side":
+			$return = $tokens[2];
+			break;
+		case "nodeType":
+			$return = $tokens[3];
+			break;
+	}
+
+	return $return;
+}

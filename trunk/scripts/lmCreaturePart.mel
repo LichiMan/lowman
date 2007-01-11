@@ -1,0 +1,27 @@
+//--------------------------------------------------------------------------//
+//  lmCreaturePart.mel
+//
+//  Author:		Miguel González Viñé
+//				lichiman@gmail.com
+//
+//  Version:		0.0.1
+//  Date:			Jan 10, 2007
+//
+//  Description:	Creates the creaturePart attribute.
+//
+//  Usage:		Use "lmCreaturePart $object;"
+//			string[] $object: Object to add the attribute
+//
+//
+//  Return:		none
+//
+//  Files Needed:
+//			none
+//
+//--------------------------------------------------------------------------/
+global proc lmCreaturePart(string $object)
+{
+	addAttr -longName "creaturePart" -attributeType "enum"
+		-enumName "root:hips:spine:neck:head:arm:leg:quadleg:tail:wing:skip"
+		-keyable 1 $object;
+}
