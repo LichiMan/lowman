@@ -1,0 +1,91 @@
+//--------------------------------------------------------------------------//
+//  lmGuidesGUC.mel
+//
+//  Author:		Miguel González Viñé
+//				lichiman@gmail.com
+//
+//  Version:		0.0.1
+//  Date:			Jan 10, 2007
+//
+//  Description:	Creates a GuideUnionCurve to connect two GuideImplicitSpheres.
+//
+//  Usage:		Use "lmGuidesGUC $parent $child;"
+//				string $parent Name of the parent GIS.
+//				string $child Name of the child GIS.
+//
+//
+//  Return:		none
+//
+//  Files Needed:
+//			lmChannelControl.mel
+//
+//--------------------------------------------------------------------------/
+global proc lmGuidesGUC(string $GISparent, string $GISchild)
+{
+	// Check for errors
+	if (!`objExists $GISparent`)
+		error ($GISparent+" doesn't exits");
+	if (!`objExists $GISchild`)
+		error ($GISparent+" doesn't exits");
+
+	// Check if $creatureName exists
+	string $creatureName = `lmCreatureTokenize $GISparent "creature"`;
+	string $creature = `lmCreatureExists $creatureName`;
+	if ($creature == "")
+		$creature = `lmCreatureCreate $creatureName`;
+	string $creatureChilds[] = `listRelatives -c -type transform $creature`;
+	string $placementGRP = $creatureChilds[0];
+	string $jointsGRP = $creatureChilds[1];
+	string $geometryGRP = $creatureChilds[2];
+	string $constraintsGRP = $creatureChilds[3];
+	string $clustersGRP = $creatureChilds[4];
+	string $extrasGRP = $creatureChilds[5];
+
+	// Get $guideSide
+	string $guideSide = `lmCreatureTokenize $GISchild "side"`;
+	
+	// Get GIScleans
+	string $GISparentClean = `lmCreatureTokenize $GISparent "object"`;
+	string $GISchildClean = `lmCreatureTokenize $GISchild "object"`;
+
+	// Create GUC
+	string $GUC = `curve -d 1 -p 0 0 0 -p 0 0 0 -k 0 -k 1`;
+	$GUC = `rename $GUC ($creatureName+"_"+$GISparentClean+$GISchildClean+"_"+$guideSide+"_GUC")`;
+	string $GUCshape[] = `listRelatives -shapes -type "nurbsCurve" $GUC`;
+
+	//make CV into a cluster
+	string $CLUparent[] = `cluster ($GUCshape[0] + ".cv[0]")`;
+	$CLUparent[1] = `rename $CLUparent[1] ($creatureName+"_"+$GISparentClean+$GISchildClean+"Parent_"+$guideSide+"_CLU")`;
+	string $POCparent[] = `pointConstraint -name ($creatureName+"_"+$GISparentClean+$GISchildClean+"Parent_"+$guideSide+"_POC") $GISparent $CLUparent[1]`;
+
+	string $CLUchild[] = `cluster ($GUCshape[0] + ".cv[1]")`;
+	$CLUchild[1] = `rename $CLUchild[1] ($creatureName+"_"+$GISparentClean+$GISchildClean+"Child_"+$guideSide+"_CLU")`;
+	string $POCchild[] = `pointConstraint -name ($creatureName+"_"+$GISparentClean+$GISchildClean+"Child_"+$guideSide+"_POC") $GISchild $CLUchild[1]`;
+
+	// Parent GUCs, CLUs and POCs
+	parent $GUC $extrasGRP;
+	parent $CLUparent[1] $CLUchild[1] $clustersGRP;
+	parent $POCparent[0] $POCchild[0] $constraintsGRP;
+
+	// Manage GUCs attributes
+	lmChannelControl($GUC,"ALL",0,1);
+	setAttr ($GUC+".overrideEnabled") 1;
+	setAttr ($GUC+".overrideDisplayType") 2;
+
+	// Manage CLUs attributes
+	setAttr ($CLUparent[1]+".visibility") 0;
+	lmChannelControl($CLUparent[1],"ALL",0,1);
+	setAttr ($CLUparent[1]+".overrideEnabled") 1;
+	setAttr ($CLUparent[1]+".overrideDisplayType") 2;
+	// Manage CLUs attributes
+	setAttr ($CLUchild[1]+".visibility") 0;
+	lmChannelControl($CLUchild[1],"ALL",0,1);
+	setAttr ($CLUchild[1]+".overrideEnabled") 1;
+	setAttr ($CLUchild[1]+".overrideDisplayType") 2;
+	
+	// Manage POCs attributes
+	setAttr ($POCparent[0]+".visibility") 0;
+	setAttr ($POCchild[0]+".visibility") 0;
+
+	select -cl;
+}

@@ -22,6 +22,7 @@
 //  Files Needed:
 //			lmCreatureCreate.mel
 //			lmCreatureExists.mel
+//			lmGuidesGUC.mel
 //			lmChannelControl.mel
 //
 //--------------------------------------------------------------------------/
@@ -29,7 +30,7 @@ global proc lmGuidesCreate(string $creatureName, string $guideName, string $guid
 {
 	// String for the selected object
 	string $selected[] = `ls -sl`;
-
+	string $GIS[];
 	// Check if $creatureName exists
 	string $creature = `lmCreatureExists $creatureName`;
 	if ($creature == "")
@@ -41,6 +42,11 @@ global proc lmGuidesCreate(string $creatureName, string $guideName, string $guid
 	string $constraintsGRP = $creatureChilds[3];
 	string $clustersGRP = $creatureChilds[4];
 	string $extrasGRP = $creatureChilds[5];
+	if (!`attributeExists "scaleGuides" $placementGRP`)
+	{
+	addAttr -longName "scaleGuides" -attributeType "float" -minValue 0 -defaultValue 0.2 -keyable 1 $placementGRP;
+	addAttr -longName "scaleAim" -attributeType "float" -minValue 0 -defaultValue 0.1 -keyable 1 $placementGRP;
+	}
 
 	// Check for errors
 	$guideSide = `capitalizeString $guideSide`;
@@ -52,22 +58,50 @@ global proc lmGuidesCreate(string $creatureName, string $guideName, string $guid
 	// Create GISs
 	int $j = $i+1;
 	string $GISshape = `createNode implicitSphere`;
-	string $GIS[] = `listRelatives -p -type transform $GISshape`;
-	$GIS[0] = `rename $GIS[0] ($guideName+$j+"_"+$guideSide+"_GIS")`;
-	string $GISclean = `substitute ("_"+$guideSide+"_GIS") $GIS[0] ""`;
+	string $GIStmp[] = `listRelatives -p -type transform $GISshape`;
+	$GIS[$i] = `rename $GIStmp[0] ($creatureName+"_"+$guideName+$j+"_"+$guideSide+"_GIS")`;
+	string $tmp[] = `listRelatives -shapes $GIS[$i]`;
+	$GISshape = $tmp[0];
 
-	xform -ws -t 0 ($guideDistance*$i) 0 $GIS[0];
-
+	// Parent GISs in the right place
+	if ($i == 0 && `lmCreatureTokenize $selected[0] "nodeType"` != "GIS")
+		parent $GIS[$i] $placementGRP;
+	if ($i == 0 && `lmCreatureTokenize $selected[0] "nodeType"` == "GIS")
+	{
+		parent $GIS[$i] $selected[0];
+		lmGuidesGUC $selected[0] $GIS[$i];
+		float $pos[] = `xform -q -ws -t $selected[0]`;
+		float $posSide[] = {0,0,0};
+		switch ($guideSide)
+		{
+			case "L":
+				$posSide[0] = 1;
+				break;
+			case "R":
+				$posSide[0] = -1;
+				break;
+			case "C":
+				$posSide[2] = -1;
+				break;
+		}
+		xform -ws -t ($pos[0]+$posSide[0]) ($pos[1]+$posSide[1]) ($pos[2]+$posSide[2]) $GIS[$i];
+	}
 	if ($i > 0)
-		parent $GIS[0] ($guideName+$i+"_"+$guideSide+"_GIS");
+	{
+		parent $GIS[$i] ($creatureName+"_"+$guideName+$i+"_"+$guideSide+"_GIS");
+		makeIdentity -apply false -t 1 -r 1 -s 1 $GIS[$i];
+		xform -os -t 0 $guideDistance 0 $GIS[$i];
+	}
 	
 	// Create GUOs
 	string $GUOshape = `createNode locator`;
 	string $GUO[] = `listRelatives -p -type transform $GUOshape`;
-	$GUO[0] = `rename $GUO[0] ($guideName+$j+"_"+$guideSide+"_GUO")`;
+	$GUO[0] = `rename $GUO[0] ($creatureName+"_"+$guideName+$j+"_"+$guideSide+"_GUO")`;
+	$tmp = `listRelatives -shapes $GUO[0]`;
+	$GUOshape = $tmp[0];
 
 	int $GUOtranslation = 1;
-	parent $GUO[0] $GIS[0];
+	parent $GUO[0] $GIS[$i];
 	makeIdentity -apply false -t 1 -r 1 -s 1 $GUO[0];
 	setAttr ($GUO[0]+".translateZ") (-$GUOtranslation);
 	xform -os -rotatePivot 0 0 $GUOtranslation $GUO[0];
@@ -76,62 +110,33 @@ global proc lmGuidesCreate(string $creatureName, string $guideName, string $guid
 	// Create GUCs, its CLUs and its POCs
 	if ($i > 0)
 	{
-		string $GISparent[] = `listRelatives -p -type transform $GIS[0]`;
-		string $GISparentClean = `substitute ("_"+$guideSide+"_GIS") $GISparent[0] ""`;
-		string $GUC = `curve -d 1 -p 0 0 0 -p 0 0 0 -k 0 -k 1`;
-		$GUC = `rename $GUC ($GISparentClean+$GISclean+"_"+$guideSide+"_GUC")`;
-		string $GUCshape[] = `listRelatives -shapes -type "nurbsCurve" $GUC`;
-
-		//make CV into a cluster
-		string $CLUparent[] = `cluster ($GUCshape[0] + ".cv[0]")`;
-		$CLUparent[1] = `rename $CLUparent[1] ($GISparentClean+$GISclean+"Parent_"+$guideSide+"_CLU")`;
-		string $POCparent[] = `pointConstraint -name ($GISparentClean+$GISclean+"Parent_"+$guideSide+"_POC") $GISparent[0] $CLUparent[1]`;
-
-		string $CLUchild[] = `cluster ($GUCshape[0] + ".cv[1]")`;
-		$CLUchild[1] = `rename $CLUchild[1] ($GISparentClean+$GISclean+"Child_"+$guideSide+"_CLU")`;
-		string $POCchild[] = `pointConstraint -name ($GISparentClean+$GISclean+"Child_"+$guideSide+"_POC") $GIS[0] $CLUchild[1]`;
-
-		// Parent GUCs, CLUs and POCs
-		parent $GUC $extrasGRP;
-		parent $CLUparent[1] $CLUchild[1] $clustersGRP;
-		parent $POCparent[0] $POCchild[0] $constraintsGRP;
-
-		// Manage GUCs attributes
-		lmChannelControl($GUC,"ALL",0,1);
-		setAttr ($GUC+".overrideEnabled") 1;
-		setAttr ($GUC+".overrideDisplayType") 2;
-
-		// Manage CLUs attributes
-		setAttr ($CLUparent[1]+".visibility") 0;
-		lmChannelControl($CLUparent[1],"ALL",0,1);
-		setAttr ($CLUparent[1]+".overrideEnabled") 1;
-		setAttr ($CLUparent[1]+".overrideDisplayType") 2;
-		// Manage CLUs attributes
-		setAttr ($CLUchild[1]+".visibility") 0;
-		lmChannelControl($CLUchild[1],"ALL",0,1);
-		setAttr ($CLUchild[1]+".overrideEnabled") 1;
-		setAttr ($CLUchild[1]+".overrideDisplayType") 2;
-		
-		// Manage POCs attributes
-		setAttr ($POCparent[0]+".visibility") 0;
-		setAttr ($POCchild[0]+".visibility") 0;
+	string $GISparent[] = `listRelatives -p -type transform $GIS[$i]`;
+	lmGuidesGUC $GISparent[0] $GIS[$i];
 	}
 
-
 	// Manage GISs attributes
-	lmChannelControl($GIS[0],"scale",0,1);
-	lmChannelControl($GIS[0],"visibility",0,1);
-	addAttr -longName "rotateAim" -attributeType "float" -keyable 1 $GIS[0];
-	connectAttr -force ($GIS[0]+".rotateAim") ($GUO[0]+".rotateY");
+	lmChannelControl($GIS[$i],"scale",0,1);
+	lmChannelControl($GIS[$i],"visibility",0,1);
+	addAttr -longName "rotateAim" -attributeType "float" -keyable 1 $GIS[$i];
+	connectAttr -force ($GIS[$i]+".rotateAim") ($GUO[0]+".rotateY");
+	lmCreaturePart $GIS[$i];
+	if ($i > 0)
+		setAttr -lock 1 ($GIS[$i]+".creaturePart") 10;
 
 	// Manage GUOs attributes
 	lmChannelControl($GUO[0],"ALL",0,1);
 	setAttr ($GUO[0]+".overrideEnabled") 1;
 	setAttr ($GUO[0]+".overrideDisplayType") 2;
 
+	// Manage placement attributes
+	connectAttr -force ($placementGRP+".scaleGuides") ($GISshape+".radius");
+	connectAttr -force ($placementGRP+".scaleAim") ($GUOshape+".localScaleX");
+	connectAttr -force ($placementGRP+".scaleAim") ($GUOshape+".localScaleY");
+	connectAttr -force ($placementGRP+".scaleAim") ($GUOshape+".localScaleZ");
+
 	}
 
 
-	select -cl;
+	select $GIS[0];
 }
 
