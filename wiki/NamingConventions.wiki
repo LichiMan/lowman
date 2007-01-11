@@ -20,3 +20,5 @@
 || || || || ||*GUO*||Guide Up Object|| || ||
 || || || || ||*GUC*||Guide Union Curve|| || ||
 || || || || ||*GRP*||Group|| || ||
+|| || || || ||*LTC*||Lattice|| || ||
+|| || || || ||*GEO*||Geometry|| || ||
