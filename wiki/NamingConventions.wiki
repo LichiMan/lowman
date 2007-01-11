@@ -21,4 +21,5 @@
 || || || || ||*GUC*||Guide Union Curve|| || ||
 || || || || ||*GRP*||Group|| || ||
 || || || || ||*LTC*||Lattice|| || ||
+|| || || || ||*LBS*||Lattice Base|| || ||
 || || || || ||*GEO*||Geometry|| || ||
