@@ -1,0 +1,101 @@
+
+//============================== MAIN WINDOW ==============================//
+global proc rfxManageScene (string $type)
+{
+	// variables
+	string $myScriptDir = `internalVar -userScriptDir`;
+	global string $myBitmapDir;
+	$myBitmapDir = `internalVar -userScriptDir`;
+
+	string $title;
+	switch ($type)
+	{
+		case "open":
+			$title = "Open Scene...";
+			break;
+		case "saveAs":
+			$title = "Save Scene As...";
+			break;
+		case "import":
+			$title = "Import Scene...";
+			break;
+		case "exportAll":
+			$title = "Export All...";
+			break;
+		case "exportSelection":
+			$title = "Export Selection...";
+			break;
+	}
+
+	// crear window
+	string $win = "rfxManageSceneWin";
+	if (`window -exists $win`)
+		deleteUI $win;
+
+	windowPref -ra; 
+	window -rtf true -title $title $win;
+
+	string $mainFL = `formLayout -h 616 -w 300`;
+
+	//
+	string $projectosT = `text -label "PROJECTOS:" ($win+"_projectosT")`;
+	string $projectosTSL = `textScrollList -h 200 -allowMultiSelection false ($win+"_projectosTSL")`;
+	string $projectsT = `text -label "PLANOS:" ($win+"_projectsT")`;
+	string $projectsTSL = `textScrollList -h 200 -allowMultiSelection false ($win+"_projectsTSL")`;
+	string $scenesT = `text -label "SCENAS:" ($win+"_scenesT")`;
+	string $sortByT = `text -label "SORT BY:" ($win+"_sortByT")`;
+	string $sortByOM = `optionMenu ($win+"_sortByOM")`;
+		string $sortByNameMI = `menuItem -label "Name" -parent $sortByOM ($win+"_sortByNameMI")`;
+		string $sortByDateMI = `menuItem -label "Date" -parent $sortByOM ($win+"_sortByDateMI")`;
+		string $sortBySizeMI = `menuItem -label "Size" -parent $sortByOM ($win+"_sortBySizeMI")`;
+	string $scenesTSL = `textScrollList -allowMultiSelection false ($win+"_scenesTSL")`;
+    	// The buttons
+	string $cancelB = `button -w 72 -label "Cancel" ($win+"_cancelB")`;
+	string $finishB = `button -w 72 -label "Finish" ($win+"_finishB")`;
+	
+	formLayout -edit
+		-attachForm	$projectosT	"top"		8
+		-attachForm	$projectosT	"left"		5
+		-attachControl	$projectosTSL	"top"		2	$projectosT
+		-attachForm	$projectosTSL	"left"		5
+		-attachPosition	$projectosTSL	"right"		0	48
+		-attachForm	$projectsT	"top"		8
+		-attachPosition	$projectsT	"left"		0	52
+		-attachControl	$projectsTSL	"top"		2	$projectsT
+		-attachPosition	$projectsTSL	"left"		0	52
+		-attachForm	$projectsTSL	"right"		5
+		-attachControl	$scenesT	"top"		12	$projectosTSL
+		-attachForm	$scenesT	"left"		5
+		-attachControl	$sortByT	"top"		12	$projectosTSL
+		-attachControl	$sortByT	"right"		2	$sortByOM
+		-attachControl	$sortByOM	"top"		5	$projectosTSL
+		-attachForm	$sortByOM	"right"		5
+		-attachControl	$scenesTSL	"top"		5	$sortByOM
+		-attachForm	$scenesTSL	"left"		5
+		-attachForm	$scenesTSL	"right"		5
+		-attachControl	$scenesTSL	"bottom"	5	$cancelB
+		-attachForm	$cancelB	"right"		5
+		-attachForm	$cancelB	"bottom"	5
+		-attachForm	$finishB	"bottom"	5
+		-attachControl	$finishB	"right"		12	$cancelB
+		$mainFL;
+
+	//mostrar window
+	showWindow $win;
+
+}
+
+
+
+/*
+PARA USAR UNA VEZ ACABADO EL SCRIPT
+
+// Query the command of the OpenScene in the File Menu to edit later
+menuItem -q -command openProject;
+
+
+// Get the command name asign to CTRL+O Hotkey
+string $nameCommand = `hotkey -query -name -ctl o`;
+// Edit the command for OpenScene Hokey
+nameCommand -c `menuItem -q -command openProject` -ann "Open Scene: Open a scene" $nameCommand;
+*/
