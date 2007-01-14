@@ -1,6 +1,6 @@
 
 //============================== MAIN WINDOW ==============================//
-global proc rfxManageScene (string $type)
+global proc rfxManageScene (string $mode)
 {
 	// variables
 	string $myScriptDir = `internalVar -userScriptDir`;
@@ -8,22 +8,28 @@ global proc rfxManageScene (string $type)
 	$myBitmapDir = `internalVar -userScriptDir`;
 
 	string $title;
-	switch ($type)
+	string $titleB;
+	switch ($mode)
 	{
 		case "open":
 			$title = "Open Scene...";
+			$titleB = "Open";
 			break;
 		case "saveAs":
 			$title = "Save Scene As...";
+			$titleB = "Save";
 			break;
 		case "import":
 			$title = "Import Scene...";
+			$titleB = "Import";
 			break;
 		case "exportAll":
 			$title = "Export All...";
+			$title = "Save";
 			break;
 		case "exportSelection":
 			$title = "Export Selection...";
+			$title = "Save";
 			break;
 	}
 
@@ -35,45 +41,68 @@ global proc rfxManageScene (string $type)
 	windowPref -ra; 
 	window -rtf true -title $title $win;
 
-	string $mainFL = `formLayout -h 616 -w 300`;
+	string $mainFL = `formLayout -h 300 -w 700`;
 
 	//
-	string $projectosT = `text -label "PROJECTOS:" ($win+"_projectosT")`;
-	string $projectosTSL = `textScrollList -h 200 -allowMultiSelection false ($win+"_projectosTSL")`;
-	string $projectsT = `text -label "PLANOS:" ($win+"_projectsT")`;
-	string $projectsTSL = `textScrollList -h 200 -allowMultiSelection false ($win+"_projectsTSL")`;
-	string $scenesT = `text -label "SCENAS:" ($win+"_scenesT")`;
-	string $sortByT = `text -label "SORT BY:" ($win+"_sortByT")`;
-	string $sortByOM = `optionMenu ($win+"_sortByOM")`;
-		string $sortByNameMI = `menuItem -label "Name" -parent $sortByOM ($win+"_sortByNameMI")`;
-		string $sortByDateMI = `menuItem -label "Date" -parent $sortByOM ($win+"_sortByDateMI")`;
-		string $sortBySizeMI = `menuItem -label "Size" -parent $sortByOM ($win+"_sortBySizeMI")`;
-	string $scenesTSL = `textScrollList -allowMultiSelection false ($win+"_scenesTSL")`;
+	string $projectsFL = `frameLayout -label "PROJECTS:" -labelAlign "bottom" -borderStyle "etchedIn" ($win+"_projectsFL")`;
+		//string $projectsT = `text -label "PROJECTS:" ($win+"_projectsT")`;
+		string $projectsTSL = `textScrollList -h 200 -allowMultiSelection false -parent $projectsFL ($win+"_projectsTSL")`;
+	
+	setParent $mainFL;
+	string $shotsFL = `frameLayout -label "SHOTS:" -labelAlign "bottom" -borderStyle "etchedIn" ($win+"_shotsFL")`;
+		//string $shotsT = `text -label "SHOTS:" ($win+"_shotsT")`;
+		string $shotsTSL = `textScrollList -h 200 -allowMultiSelection false -parent $shotsFL ($win+"_shotsTSL")`;
+	
+	setParent $mainFL;
+	string $scenesFL = `frameLayout -label "SCENES:" -labelAlign "bottom" -borderStyle "etchedIn" ($win+"_scenesFL")`;
+		//string $scenesT = `text -label "SCENES:" ($win+"_scenesT")`;
+		string $scenesTSL = `textScrollList -h 200 -allowMultiSelection false -parent $scenesFL ($win+"_scenesTSL")`;
+			string $scenesPM = `popupMenu -button 3 -parent $scenesTSL ($win+"_scenesPM")`;
+				string $scenesRenameMI = `menuItem -label "Rename..." -parent $scenesPM ($win+"_scenesRenameMI")`;
+				string $scenesDeleteMI = `menuItem -label "Delete..." -parent $scenesPM ($win+"_scenesDeleteMI")`;
+				string $scenesDividerMI = `menuItem -divider 1 -parent $scenesPM ($win+"_scenesDividerMI")`;
+				string $scenesShowHiddenMI = `menuItem -checkBox 0 -label "Show Hidden" -parent $scenesPM ($win+"_scenesShowHiddenMI")`;
+	
+	setParent $mainFL;
+	string $sortByRL = `rowLayout -numberOfColumns 2 -columnAlign 1 "right" -columnAttach 1 "right" 1 -rowAttach 1 "both" 0 ($win+"_sortByRL")`;
+		string $sortByT = `text -label "Sort by:" ($win+"_sortByT")`;
+		string $sortByOM = `optionMenu -ann "Select SortBy"($win+"_sortByOM")`;
+			string $sortByNameMI = `menuItem -label "Name" -parent $sortByOM ($win+"_sortByNameMI")`;
+			string $sortByDateMI = `menuItem -label "Date" -parent $sortByOM ($win+"_sortByDateMI")`;
+			string $sortBySizeMI = `menuItem -label "Size" -parent $sortByOM ($win+"_sortBySizeMI")`;
+
+	// Path
+	setParent $mainFL;
+	string $pathRCL = `rowColumnLayout -numberOfRows 1 -rowHeight 1 32 -rowSpacing 1 1 -rowAttach 1 "both" 0 -columnAttach 1 "both" 0 ($win+"_pathRCL")`;
+		string $pathT = `text -label "Path:" ($win+"_pathT")`;
+		string $pathOM = `optionMenu ($win+"_pathOM")`;
+			string $pathNasMI = `menuItem -label "NAS" -parent $pathOM ($win+"_pathNasMI")`;
+			string $pathHomeMI = `menuItem -label "HOME" -parent $pathOM ($win+"_pathHomeMI")`;
+			string $pathRootMI = `menuItem -label "/" -parent $pathOM ($win+"_pathRootMI")`;
+			string $pathCdromMI = `menuItem -label "CDROM" -parent $pathOM ($win+"_pathCdromMI")`;
+
     	// The buttons
+	setParent $mainFL;
 	string $cancelB = `button -w 72 -label "Cancel" ($win+"_cancelB")`;
-	string $finishB = `button -w 72 -label "Finish" ($win+"_finishB")`;
+	string $finishB = `button -w 72 -label $titleB ($win+"_finishB")`;
 	
 	formLayout -edit
-		-attachForm	$projectosT	"top"		8
-		-attachForm	$projectosT	"left"		5
-		-attachControl	$projectosTSL	"top"		2	$projectosT
-		-attachForm	$projectosTSL	"left"		5
-		-attachPosition	$projectosTSL	"right"		0	48
-		-attachForm	$projectsT	"top"		8
-		-attachPosition	$projectsT	"left"		0	52
-		-attachControl	$projectsTSL	"top"		2	$projectsT
-		-attachPosition	$projectsTSL	"left"		0	52
-		-attachForm	$projectsTSL	"right"		5
-		-attachControl	$scenesT	"top"		12	$projectosTSL
-		-attachForm	$scenesT	"left"		5
-		-attachControl	$sortByT	"top"		12	$projectosTSL
-		-attachControl	$sortByT	"right"		2	$sortByOM
-		-attachControl	$sortByOM	"top"		5	$projectosTSL
-		-attachForm	$sortByOM	"right"		5
-		-attachControl	$scenesTSL	"top"		5	$sortByOM
-		-attachForm	$scenesTSL	"left"		5
-		-attachForm	$scenesTSL	"right"		5
-		-attachControl	$scenesTSL	"bottom"	5	$cancelB
+		-attachForm	$projectsFL	"top"		5
+		-attachForm	$projectsFL	"left"		5
+		-attachPosition	$projectsFL	"right"		0	20
+		-attachControl	$projectsFL	"bottom"	5	$sortByRL
+		-attachForm	$shotsFL	"top"		5
+		-attachControl	$shotsFL	"left"		5	$projectsFL
+		-attachPosition	$shotsFL	"right"		0	44
+		-attachControl	$shotsFL	"bottom"	5	$sortByRL
+		-attachForm	$scenesFL	"top"		5
+		-attachControl	$scenesFL	"left"		5	$shotsFL
+		-attachForm	$scenesFL	"right"		5
+		-attachControl	$scenesFL	"bottom"	5	$sortByRL
+		-attachForm	$pathRCL	"left"		5
+		-attachControl	$pathRCL	"top"		5	$projectsFL
+		-attachForm	$sortByRL	"right"		5
+		-attachControl	$sortByRL	"bottom"	5	$cancelB
 		-attachForm	$cancelB	"right"		5
 		-attachForm	$cancelB	"bottom"	5
 		-attachForm	$finishB	"bottom"	5
@@ -83,6 +112,9 @@ global proc rfxManageScene (string $type)
 	//mostrar window
 	showWindow $win;
 
+	int $pathHeightRCL = `rowLayout -q -height ($win+"_sortByRL")`;
+	rowColumnLayout -e -rowHeight 1 $pathHeightRCL ($win+"_pathRCL");
+	
 }
 
 
@@ -97,5 +129,31 @@ menuItem -q -command openProject;
 // Get the command name asign to CTRL+O Hotkey
 string $nameCommand = `hotkey -query -name -ctl o`;
 // Edit the command for OpenScene Hokey
-nameCommand -c `menuItem -q -command openProject` -ann "Open Scene: Open a scene" $nameCommand;
+inameCommand -c `menuItem -q -command openProject` -ann "Open Scene: Open a scene" $nameCommand;
+
+
+
+
+// Get an array with all the files sortBy what we want
+	window -rtf 0 -wh 150 150 ProjWindow;
+	paneLayout ProjPanes;
+	projFileViewer -dm 0 ProjFileView;
+	paneLayout -e -cn single -sp ProjFileView 1 ProjPanes;
+	projFileViewer -e -fr ProjFileView;
+	showWindow; 
+workspace -dir "/home/lichiman/maya/projects/default/"
+
+projFileViewer -q -si ProjFileView;
+projFileViewer -e -sii 5 ProjFileView;
+projFileViewer -e -sb date -fr ProjFileView;
+
+string $fileList[];
+int $ni = `projFileViewer -q -ni ProjFileView`;
+for ($x=0;$x<$ni;$x++)
+{
+	projFileViewer -e -sii $x ProjFileView;
+	string $fileListTmp[] = `projFileViewer -q -si ProjFileView`;
+	$fileList[$x] = $fileListTmp[0];
+}
+print $fileList;
 */
