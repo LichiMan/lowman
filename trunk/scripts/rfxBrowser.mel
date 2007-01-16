@@ -222,6 +222,25 @@ proc rfxBrowserSelectCurrentShot()
 	rfxBrowserGetScenes;
 }
 
+global proc rfxBrowserRename()
+{
+	string $win = "rfxBrowserWin";
+	string $scenes[] = `textScrollList -query -si ($win+"_scenesTSL")`;
+	string $scene = $scenes[0];
+	string $path = `textField -q -text ($win+"_pathTF")`;
+	string $openFile = $path+$scene;
+	string $rename;
+
+ 	string $result = `promptDialog -title "Rename File" -message "Enter Name:" -text $scene -button "Rename" -button "Cancel" -defaultButton "Rename" -cancelButton "Cancel" -dismissString "Cancel"`;
+ 	if ($result == "Rename") {
+ 		$rename = `promptDialog -query -text`;
+ 	}
+
+	eval ("sysFile -rename \""+($path+$rename)+"\" \""+$openFile+"\"");
+
+	rfxBrowserGetScenes;
+}
+
 global proc rfxBrowserOpen()
 {
 	string $os = `about -os`;
@@ -375,7 +394,7 @@ global proc rfxBrowser (string $mode)
 		//string $scenesT = `text -label "SCENES:" ($win+"_scenesT")`;
 		string $scenesTSL = `textScrollList -h 200 -allowMultiSelection false -sc "rfxBrowserSelectedScene;" -dcc ("rfxBrowserFinish "+$mode+";") -parent $scenesFL ($win+"_scenesTSL")`;
 			string $scenesPM = `popupMenu -button 3 -parent $scenesTSL ($win+"_scenesPM")`;
-				string $scenesRenameMI = `menuItem -label "Rename..." -parent $scenesPM ($win+"_scenesRenameMI")`;
+				string $scenesRenameMI = `menuItem -label "Rename..." -c "rfxBrowserRename;" -parent $scenesPM ($win+"_scenesRenameMI")`;
 				string $scenesDeleteMI = `menuItem -label "Delete..." -parent $scenesPM ($win+"_scenesDeleteMI")`;
 				string $scenesDividerMI = `menuItem -divider 1 -parent $scenesPM ($win+"_scenesDividerMI")`;
 				string $scenesShowHiddenMI = `menuItem -checkBox 0 -label "Show Hidden" -c "rfxBrowserGetScenes;" -parent $scenesPM ($win+"_scenesShowHiddenMI")`;
