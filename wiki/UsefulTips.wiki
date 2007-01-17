@@ -17,7 +17,7 @@ To make sure the current object isn't an attribute, or a component.
 string $sel[] = `ls -sl`;
 for( $a in $sel )
     if( `match "[.\[]+" $a` == "" )
-        print "It's an object.)
+        print "It's an object.";
 }}}
 
 ==Windows Tips==
@@ -27,4 +27,3 @@ To open a file with the default program assigned.
 {{{
 start "" "H:\LIBRERIA\caspa\ApacheTommySeebach.avi"
 }}}
-
