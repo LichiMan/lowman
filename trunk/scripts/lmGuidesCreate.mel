@@ -9,7 +9,7 @@
 //
 //  Description:	Create a straight "spine" of guides.
 //
-//  Usage:		Use "lmGuidesCreate $creatureName $guideName $guideUnits $guideDistance;"
+//  Usage:		Use "lmGuidesCreate $creatureName $guideName $guideSide $guideUnits $guideDistance;"
 //				$creatureName Name of the creature to parent.
 //				$guideName Name of the guide.
 //				$guideSide Side of the guide (L, R or C).
