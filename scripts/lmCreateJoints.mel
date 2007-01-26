@@ -1,0 +1,84 @@
+//--------------------------------------------------------------------------//
+//  lmJointsCreate.mel
+//
+//  Author:		Miguel González Viñé
+//				lichiman@gmail.com
+//
+//  Version:		0.0.1
+//  Date:			Jan 26, 2007
+//
+//  Description:	Create a the joints structure from guides.
+//
+//  Usage:		Use "lmGuidesCreate $creatureName $guideName $guideSide $guideUnits $guideDistance;"
+//				$creatureName Name of the creature to parent.
+//				$guideName Name of the guide.
+//				$guideSide Side of the guide (L, R or C).
+//				$guideUnits is the number of guides.
+//				$guideDistance distance between guides.
+//
+//
+//  Return:		none
+//
+//  Files Needed:
+//			lmCreatureCreate.mel
+//			lmCreatureExists.mel
+//			lmGuidesGUC.mel
+//			lmChannelControl.mel
+//
+//--------------------------------------------------------------------------/
+global proc lmJointsCreate(string $creatureName)
+{
+	select -hi $creatureName;
+	string $select[] = `ls -sl -tr "*_GIS"`;
+	select -cl;
+
+	for ($sel in $select)
+	{
+		string $name = `substitute "GIS" $sel ""`;
+		float $pos[] = `xform -q -ws -t $sel`;
+		string $joint = `joint -p $pos[0] $pos[1] $pos[2] -n ($name + "JSK")`;
+		select -cl;
+
+		string $parent[] = `listRelatives -p -type transform $sel`;
+		string $childs[] = `listRelatives -c -type transform $sel`;
+		select $childs;
+		string $childsGIS[] = `ls -sl -tr "*_GIS"`;
+		print `size $childs`;
+		print $sel;
+
+		if (`size $childs` >= 2)
+		{
+			$aimC = `aimConstraint -offset 0 0 0 -weight 1 -aimVector 0 1 0 -upVector 0 0 1 -worldUpType "object" -worldUpObject ($name + "GUO") $childsGIS[0] $joint`;
+			delete $aimC;
+		}
+
+		float $rx = `getAttr ($joint + ".rx")`;
+		float $ry = `getAttr ($joint + ".ry")`;
+		float $rz = `getAttr ($joint + ".rz")`;
+
+		setAttr ($joint + ".rx") 0;
+		setAttr ($joint + ".ry") 0;
+		setAttr ($joint + ".rz") 0;
+		setAttr ($joint + ".jointOrientX") $rx;
+		setAttr ($joint + ".jointOrientY") $ry;
+		setAttr ($joint + ".jointOrientZ") $rz;
+
+		if (`size $parent` > 0 && $parent[0] != ($creatureName+"_placement"))
+		{
+			string $nameParent = `substitute "GIS" $parent[0] ""`;
+			parent $joint ($nameParent + "JSK");
+		}
+		else
+			parent $joint ($creatureName+"_placement");
+
+		if (`size $childs` == 1)
+		{
+			setAttr ($joint + ".jointOrientX") 0;
+			setAttr ($joint + ".jointOrientY") 0;
+			setAttr ($joint + ".jointOrientZ") 0;
+		}
+
+		select -cl;
+		//toggle -localAxis $joint;
+	}
+}
