@@ -11,7 +11,7 @@
 || || ||*D*||Down||*IKH*||IK Handle|| ||`lookat_C_CTR`||
 || || ||*F*||Forward||*LOC*||Locator|| ||`spine2_C_GUI`||
 || || ||*B*||Back||*BLS*||Blend Shape|| ||`spine2_C_GUO`||
-|| || || || ||*CLU*||Cluster|| ||`rootSpine1_C_GUC`||
+|| || ||*X*||None||*CLU*||Cluster|| ||`rootSpine1_C_GUC`||
 || || || || ||*POC*||Point Constraint|| ||`rootHip_C_GUC`||
 || || || || ||*AIC*||Aim Constraint|| || ||
 || || || || ||*ORC*||Orient Constraint|| || ||
