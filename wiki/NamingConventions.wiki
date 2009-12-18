@@ -7,10 +7,10 @@
 ||*arm*||arm||*L*||Left||*JSK*||Joint Skin|| ||`arm_L_JSK`||
 ||*head*||head||*R*||Right||*JIK*||Joint IK|| ||`arm_R_JIK`||
 ||*spine1*||spine1||*C*||Center||*JFK*||Joint FK|| ||`spine1_C_JSK`||
-|| || || || ||*CTR*||Control|| ||`head_C_ORC`||
-|| || || || ||*IKH*||IK Handle|| ||`lookat_C_CTR`||
-|| || || || ||*LOC*||Locator|| ||`spine2_C_GUI`||
-|| || || || ||*BLS*||Blend Shape|| ||`spine2_C_GUO`||
+|| || ||*U*||Up||*CTR*||Control|| ||`head_C_ORC`||
+|| || ||*D*||Down||*IKH*||IK Handle|| ||`lookat_C_CTR`||
+|| || ||*F*||Forward||*LOC*||Locator|| ||`spine2_C_GUI`||
+|| || ||*B*||Back||*BLS*||Blend Shape|| ||`spine2_C_GUO`||
 || || || || ||*CLU*||Cluster|| ||`rootSpine1_C_GUC`||
 || || || || ||*POC*||Point Constraint|| ||`rootHip_C_GUC`||
 || || || || ||*AIC*||Aim Constraint|| || ||
