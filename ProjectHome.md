@@ -1,0 +1,1 @@
+LowMan is a script for making quick setups to an included low model or to your own character. You can create any character with differents proportions.
